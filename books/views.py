@@ -17,6 +17,9 @@ from transactions.models import Transaction
 from reader.models import UserBookAccount
 from transactions.constants import BORROW_BOOK,RETURN_BOOK
 import datetime
+# from reader.views import send_reg_email
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 
 
 class DetailPostView(DetailView):
@@ -158,7 +161,19 @@ class DetailPostView(DetailView):
 #         return redirect('profile')
 
 #     return render(request, 'return.html', {'purchase': purchase})
-
+def send_borrow_email(user,subject, book, borrowing_price, balance_after_borrowing,template):
+    subject = 'Book Borrowed Successfully'
+    message = render_to_string(template, {
+        'user': user,
+        'book': book,
+        'borrowing_price': borrowing_price,
+        'balance_after_borrowing': balance_after_borrowing,
+        })
+    
+    send_email = EmailMultiAlternatives(subject, '', to=[user.email])
+    send_email.attach_alternative(message, "text/html")
+    send_email.send()
+    print("Borrowing Email sent successfully")
 
 
 
@@ -190,6 +205,11 @@ def borrow(request, book_id):
                 balance_after_transaction=request.user.account.balance)
 
                 messages.success(request, f'Thank you for borrowing {book.title}')
+                subject = 'Book Borrowed Successfully'
+                template = 'borrow_email_template.html' 
+                # send_reg_email(request.user, book.id, subject, template)
+                send_borrow_email(request.user, 'SuccessFully Borrowed' , book, borrowing_price, request.user.account.balance,'borrow_email.html')
+
                 return redirect('profile')
             else:
                 messages.error(request, 'Insufficient balance to borrow the book.')

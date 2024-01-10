@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Borrowed Successfully</title>
+</head>
+<body>
+    <p>Dear {{ user.first_name }},</p>
+    <p>Thank you for borrowing the book '{{ book.title }}' by '{{ book.writter_name }}'.</p>
+    <p>Details:</p>
+    <ul>
+        <li>Book Name: {{ book.title }}</li>
+        <li>Writer: {{ book.writter_name }}</li>
+        <li>Borrowing Price: {{ borrowing_price }} TK.</li>
+    </ul>
+    <p>Your account balance after borrowing: ${{ balance_after_borrowing }}</p>
+    <p>Enjoy your reading!</p>
+    <p>Don't forget to give a review</p>
+    <p>Best regards,<br>TimeBooks Library</p>
+</body>
+</html>
