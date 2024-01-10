@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block head_title %}Home{% endblock %}
+
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row d-flex align-items-center g-0">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">Welcome to TimeBooks Library</h2>
+            <p class="text-center">
+                Immerse Yourself in the World of Literature! At TimeBooks Library, we invite you to explore a rich collection of books spanning various genres and topics. Whether you're a fiction enthusiast, a history buff, or a science aficionado, we have a book waiting to captivate your imagination.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <img src="{% static 'lamb.png' %}" alt="Library Image" class="img-fluid mx-auto  d-block ">
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{% static 'cat.jfif' %}" class="img-fluid w-75 rounded-circle" alt="Library Interior">
+        </div>
+        <div class="col-md-6 text-center">
+            <h3>About Us</h3>
+            <p>
+                TimeBooks Library is more than just a book repository; we are a literary haven dedicated to providing you with an enriching reading experience. Our commitment extends beyond offering books; we strive to create an environment that fosters a love for reading and learning.
+            </p>
+            <p>
+                With a diverse collection that caters to a range of interests, we have curated our library to bring you the best in literature. Whether you seek the latest novels, historical accounts, or scientific discoveries, TimeBooks Library is your gateway to a world of knowledge.
+            </p>
+            <p>
+                Immerse yourself in the joy of reading and exploration with TimeBooks Library. Join us on a literary journey where every book opens a new chapter of discovery.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

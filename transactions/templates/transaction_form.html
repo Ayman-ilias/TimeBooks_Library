@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block head_title %}Transaction Form{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+ 
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4" style="color: #74441f;">Add Money to Borrow Books</h2>
+          <form method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <button type="submit" class="btn d-block mx-auto mt-3" style="background-color: #74441f; color: white;">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+{% endblock %}

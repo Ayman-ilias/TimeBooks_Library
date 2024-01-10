@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block head_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="text-center mb-4">
+        <div class="card border-0 p-4 d-inline-block bg-light" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h2 class="m-0 text-primary">My Profile Page</h2>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'edit_profile' %}" class="btn btn-success btn-lg mx-2">Update Profile</a>
+        <a href="{% url 'pass_change' %}" class="btn btn-success btn-lg mx-2">Change Password</a>
+    </div>
+
+    <div class="mt-4">
+        <h1 class="text-center">User ID: {{ request.user.account.account_id }}</h1>
+    </div>
+
+    <div class="text-center mt-4">
+        <div class="card border-0 p-4 d-inline-block bg-light" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h2 class="m-0 text-secondary">My Books</h2>
+        </div>
+    </div>
+
+    <table class="table mx-auto mb-3" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Book Name</th>
+                <th scope="col">Borrowing Price</th>
+                <th scope="col">Borrow Date</th>
+                <th scope="col">Category</th>
+                <th scope="col">Return Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{ purchase.book.title }}</td>
+                <td>${{ purchase.book.borrowing_price }}</td>
+                <td>{{ purchase.purchase_date }}</td>
+                <td>{{ purchase.book.category.name }}</td>
+                <td>{{ purchase.return_date }}</td>
+                <td>
+                    {% if not purchase.return_date %}
+                        <form method="post" action="{% url 'return_book' purchase.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-success">Return</button>
+                        </form>
+                    {% else %}
+                        <button class="btn btn-sm btn-outline-secondary" disabled>Returned</button>
+                    {% endif %}
+                </td>
+                <td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+{% endblock content %}
+ 
+ 
+    

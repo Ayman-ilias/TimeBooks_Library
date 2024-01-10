@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block head_title %}{{ book.title }}{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card m-2">
+                <div class="card-body" style="background-color: lightcyan;">
+                    <img class="img-fluid mx-auto d-block" src="{{ book.image.url }}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card m-2">
+                <div class="card-body" style="background-color: lightcyan;">
+                    <h1 class="card-title">{{ book.title }}</h1>
+                    <h4>By <strong class="card-title">{{ book.writter_name }}</strong></h4>
+                    <strong>Category
+                        <button class="btn btn-danger btn-sm m-2" disabled>{{ book.category }}</button></strong>
+                    <p class="card-text">{{ book.description }}</p>
+                    <h5 class="card-text">Price: {{ book.borrowing_price }} TK.</h5>
+                    <h5 class="card-text">Quantity:
+                        {% if book.quantity > 0 %}
+                            {{ book.quantity }}
+                        {% else %}
+                            Currently Out Of Stock
+                        {% endif %}
+                    </h5>
+
+                    {% if request.user.is_authenticated %}
+                        {% if book.quantity != 0 %}
+                            <a href="{% url 'borrow' book.id %}" class="btn btn-warning">Borrow</a>
+                        {% else %}
+                            <p>----Not Available Now---</p>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'user_login' %}" class="btn btn-danger text-center btn-sm">Sign in To Borrow</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="container mt-4">
+    <h3 class="text-center border">⭐⭐⭐⭐⭐Reviews⭐⭐⭐⭐⭐</h3>
+    
+    {% for comment in comments %}
+    
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <strong>{{ comment.user.username }}</strong>
+                        <span class="text-warning">
+                            {% for rating, star in stars.items %}
+                                {% if comment.rating == rating %}
+                                    {{ star }}
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-muted">{{ comment.body }}</p>
+                        <small class="text-muted">
+                            Email: {{ comment.user.email }} | Created On: {{ comment.created_on }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% if request.user.is_authenticated %}
+    {% if has_purchased_or_borrowed %}
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="card" style="width: 50%;">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">Please Add Your Review</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ comment_form | crispy }}
+                        <button type="submit" class="btn btn-warning d-block mx-auto">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center mt-5">
+            <p class="lead">You can add a review if you will borrow this book.</p>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="text-center mt-5">
+        <p class="lead">You need to be logged in to add a review.</p>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block head_title %}Registration{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+  <div class="card p-4" style="width: 70%; margin: auto; background-color: #f8f9fa; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+    <h2 class="text-center mb-4" style="color: #343a40; font-size: 28px; font-weight: bold;">Create an Account</h2>
+    <p class="text-center mb-4" style="color: #495057; font-size: 16px;">Already have an account? <a href="{% url 'user_login' %}" style="color: #007bff; text-decoration: none; font-weight: 500;">Sign in here</a></p>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        {{ form.username|as_crispy_field }}
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.first_name|as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+          {{ form.last_name|as_crispy_field }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        {{ form.email|as_crispy_field }}
+      </div>
+
+      <div class="mb-3">
+        {{ form.mobile_number|as_crispy_field }}
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.gender|as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+          {{ form.birth_date|as_crispy_field }}
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.city|as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+          {{ form.country|as_crispy_field }}
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.password1|as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+          {{ form.password2|as_crispy_field }}
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Create Account</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

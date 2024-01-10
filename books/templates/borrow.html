@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+    {% block head_title %}Borrow {{book.title}}-{{ book.borrowing_price }}  {% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card" style="width: 1000px;">
+        <h5 class="card-header text-center">TimeBooks Library</h5>
+        <div class="card-body text-center">
+            <h5 class="card-title">Do you want to buy {{ book.title }}</h5>
+            <p class="card-text">Wriiter: {{ book.writter_name }}</p>
+            <a href="" class="btn btn-sm btn-danger disabled card-text">{{ book.category }}</a>
+            <p class="card-text">Price: {{ book.borrowing_price }} TK</p>
+            <p class="card-text">N.B : Refundable</p>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            <form method="post">
+                {% csrf_token %}
+                <button class="btn btn-primary btn-lg" type="submit">Borrow</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

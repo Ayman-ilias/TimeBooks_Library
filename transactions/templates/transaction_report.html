@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block head_title %}
+    Transaction Report
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="font-bold text-3xl text-center pb-5">Transaction Report</h1>
+        <hr>
+        <form method="get" action="{% url 'transaction_report' %}">
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <label for="start_date">From:</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="end_date">To:</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button type="submit" class="btn btn-primary mt-4">Filter</button>
+                </div>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped mt-4">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Date</th>
+                    <th>Transaction Type</th>
+                    <th>Amount</th>
+                    <th>Balance After Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in object_list %}
+                    <tr>
+                        <td>{{ transaction.timestamp|date:"F d, Y h:i A" }}</td>
+                        <td>
+                            <span class="badge {% if transaction.get_transaction_type_display == 'Withdrawal' %}bg-danger{% else %}bg-success{% endif %}">
+                                {{ transaction.get_transaction_type_display }}
+                            </span>
+                        </td>
+                        <td>${{ transaction.amount|floatformat:2|intcomma }}</td>
+                        <td>${{ transaction.balance_after_transaction|floatformat:2|intcomma }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="bg-dark text-white">
+                    <th class="text-right" colspan="3">Current Balance</th>
+                    <th>${{ account.balance|floatformat:2|intcomma }}</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

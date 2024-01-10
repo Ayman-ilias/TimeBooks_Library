@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block head_title %}All Books{% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <div class="text-center">
+        <div class="border p-3 d-inline-block mb-3" style="background-color: #905312; color: #ffffff; border-radius: 10px;">
+            <h2 class="m-0">Explore Your Books</h2>
+        </div>
+    </div>
+    <a href="{% url 'all_books' %}" class="btn btn-light btn-sm" style="color: black;">Show All</a>
+    {% for cat in category %}
+        <a href="{% url 'category_wise_book' cat.slug %}" class="btn btn-light btn-sm" style="color: black;">{{ cat.name }}</a>
+    {% endfor %}
+    <br>
+    <h4 class="text-light text-center mt-4">{{ data | length }} Books Found</h4>
+</div>
+
+<div class="container mt-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+        {% for post in data %}
+            <div class="col mb-4">
+                <div class="card" style="width: 18rem; border: 2px solid #905312; border-radius: 15px; transition: transform 0.3s;">
+                    <img src="{{ post.image.url }}" class="card-img-top img-fluid" style="max-height: 250px; object-fit: cover; border-radius: 15px 15px 0 0;" alt="Car Image">
+                    <div class="card-body" style="background-color: white;">
+                        <h5 class="card-title"><a href="{% url 'detail_book' post.id %}" class="text-decoration-none text-dark">{{ post.title }}</a></h5>
+                        <strong>Writter: {{ post.writter_name }}</span></strong>
+                        <br>
+                        <a class="btn btn-danger btn-sm disabled">{{post.category}}</a>
+
+                        <p class="card-text">{{ post.description | truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <strong>Quantity: {{ post.quantity }}</span></strong>
+                            <strong>Price: ${{ post.borrowing_price }}</strong>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between" style="background-color:white; border-top: 2px solid #905312; border-radius: 0 0 15px 15px;">
+                        <a href="{% url 'detail_book' post.id %}" class="btn btn-sm" style="background-color: #905312; color: white;">Details</a>
+                        {% if request.user.is_authenticated %}
+                            {% if post.quantity != 0 %}
+                                <a href="{% url 'borrow' post.id %}" class="btn btn-warning btn-sm">Borrow</a>
+                            {% else %}
+                                <p class="text-danger">Not Available Now</p>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'user_login' %}" class="btn btn-danger btn-sm">Sign in To Borrow</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

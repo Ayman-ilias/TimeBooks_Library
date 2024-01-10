@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block head_title %}TimeBooks Library{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="icon" href="{% static 'logo.png' %}">
+    {% block css %}
+    <style>
+        body {
+            position: relative;
+            color: #ffffff; 
+        }
+
+        body::before {
+            content: "";
+            background: url('{% static "lp.jpg" %}') center/cover fixed no-repeat;
+            filter: blur(2px); 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+    {% endblock css %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg " style="background-color: #74441F">
+      <div class="container-fluid">
+        <a class="navbar-brand m-2" href="#">
+            <img src="{% static 'logo.png' %}" alt="Logo" class="img-fluid" style="width: 50px; height: auto;">
+        </a>
+        <strong>
+            <a class="navbar-brand" href="{% url 'home' %}" style="font-weight: 100px;">TimeBooks Library</a>
+        </strong>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <strong>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" style="color: rgb(244, 228, 228);" href="{% url 'home' %}">Home</a>
+                </li>
+                </strong>
+                <strong>
+                  <li class="nav-item">
+                    <a class="nav-link active" style="color: rgb(244, 228, 228);"  aria-current="page" href="{% url 'all_books' %}">Books</a>
+                </li>
+                </strong>
+                {% if request.user.is_authenticated %}
+                <strong>
+                  <li class="nav-item">
+                    <a class="nav-link active" style="color: rgb(244, 228, 228);" aria-current="page" href="{% url 'deposit_money' %}">Add Money</a>
+                </li>
+                </strong>
+                <strong>
+                  <li class="nav-item">
+                    <a class="nav-link active" style="color: rgb(244, 228, 228);" aria-current="page" href="{% url 'transaction_report' %}">My Transactions</a>
+                </li>
+                </strong>
+                {% endif %}
+            </ul>
+            <div class="d-flex">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if request.user.is_authenticated %}
+                    <div class="d-flex align-items-center">
+                        <div class="my-auto font-weight-bold px-5" style="color: rgb(244, 228, 228);">
+<strong>
+  Welcome, {{ request.user.first_name }} (balance: {{ request.user.account.balance }})
+
+</strong>
+                        </div>
+                    </div>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link  btn btn-outline-dark" style="color: rgb(244, 228, 228);"  href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-dark" style="color: rgb(244, 228, 228);" href="{% url 'user_logout' %}">LogOut</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item mx-3">
+                        <a class="nav-link btn btn-outline-success" style="color: rgb(244, 228, 228);"  href="{% url 'user_registration' %}">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  btn btn-outline-primary" style="color: rgb(244, 228, 228);" href="{% url 'user_login' %}">Sign In</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    </nav>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-5" role="alert" style="position: fixed; top: 10px; right: 10px; z-index: 9999;">
+        <strong>{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+    {% block content %}
+    
+    {% endblock %}
+      
+
+    
+    {% block script %}
+        <script>
+            
+        </script>
+    {% endblock script %}
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
