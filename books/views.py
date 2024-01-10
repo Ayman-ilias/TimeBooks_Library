@@ -46,7 +46,7 @@ class DetailPostView(DetailView):
         else:
             messages.error(request, 'You need to be logged in to give a review.')
 
-        return redirect('detail_book', pk=kwargs['pk'])
+        return redirect('detail_book', id=kwargs['id'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
